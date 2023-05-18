@@ -27,25 +27,34 @@ async function run() {
 
     const animalToyCollection = client.db("happyToys").collection("animalToys");
 
-    app.get('/alltoys', async(req, res) => {
-        const result = await animalToyCollection.find().limit(20).toArray();
-        res.send(result)
-    })
+    app.get("/alltoys", async (req, res) => {
+      const result = await animalToyCollection.find().limit(20).toArray();
+      res.send(result);
+    });
 
-    app.get('/toydetails/:id', async (req, res) => {
-        const id = req.params.id
-        console.log(id);
-        const query = {_id: new ObjectId(id)}
-        const result = await animalToyCollection.findOne(query);
-        res.send(result)
-    })
+    app.get("/toydetails/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await animalToyCollection.findOne(query);
+      res.send(result);
+    });
 
-    app.post('/addatoy', async(req, res) => {
-        const newToy = req.body;
-        const result = await animalToyCollection.insertOne(newToy)
-        res.send(result);
-    })
+    app.post("/addatoy", async (req, res) => {
+      const newToy = req.body;
+      const result = await animalToyCollection.insertOne(newToy);
+      res.send(result);
+    });
 
+    // my toys
+    app.get("/mytoys", async(req, res) => {
+      //  const query = req.query.email;
+      let query = {};
+      if (req.query.email) {
+        query = { email: req.query.email };
+      }
+      const result = await animalToyCollection.find(query).toArray();
+      res.send(result)
+    });
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
