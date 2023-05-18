@@ -23,7 +23,7 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
-    // await client.connect();
+    await client.connect();
 
     const animalToyCollection = client.db("happyToys").collection("animalToys");
 
@@ -45,16 +45,16 @@ async function run() {
       res.send(result);
     });
 
+    
     // my toys
-    app.get("/mytoys", async(req, res) => {
-      //  const query = req.query.email;
+    app.get('/mytoys', async (req, res) => {
       let query = {};
-      if (req.query.email) {
-        query = { email: req.query.email };
+      if (req.query?.email) {
+          query = { sellerEmail: req.query.email }
       }
       const result = await animalToyCollection.find(query).toArray();
-      res.send(result)
-    });
+      res.send(result);
+  })
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
