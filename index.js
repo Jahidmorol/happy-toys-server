@@ -32,6 +32,14 @@ async function run() {
       res.send(result);
     });
 
+
+    app.get("/toycategory/:category", async (req, res) => {
+      const category = req.params.category;
+      const query = { subCategory: category };
+      const result = await animalToyCollection.find(query).toArray();
+      res.send(result);
+    });
+
     app.get("/toydetails/:id", async (req, res) => {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
@@ -44,6 +52,7 @@ async function run() {
       const result = await animalToyCollection.insertOne(newToy);
       res.send(result);
     });
+
 
     // my toys
     app.get("/mytoys", async (req, res) => {
