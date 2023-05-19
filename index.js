@@ -76,10 +76,12 @@ async function run() {
       const updateDoc = {
         $set: {
           price: toys.price,
+          availableQuantity: toys.availableQuantity,
+          description: toys.description,
         },
       };
       const result = await animalToyCollection.updateOne(filter, updateDoc);
-      res.send(result)
+      res.send(result);
     });
 
     // Send a ping to confirm a successful connection
