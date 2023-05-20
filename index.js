@@ -32,7 +32,6 @@ async function run() {
       res.send(result);
     });
 
-
     app.get("/toycategory/:category", async (req, res) => {
       const category = req.params.category;
       const query = { subCategory: category };
@@ -40,12 +39,12 @@ async function run() {
       res.send(result);
     });
 
-    app.get("/searchbyname/:toyname", async(req, res) => {
+    app.get("/searchbyname/:toyname", async (req, res) => {
       const toyName = req.params.toyname;
-      const filter = {toyName: {$regex: toyName}}
-      const result = await animalToyCollection.find(filter).toArray()
-      res.send(result)
-    })
+      const filter = { toyName: { $regex: toyName } };
+      const result = await animalToyCollection.find(filter).toArray();
+      res.send(result);
+    });
 
     app.get("/toydetails/:id", async (req, res) => {
       const id = req.params.id;
@@ -60,7 +59,6 @@ async function run() {
       res.send(result);
     });
 
-
     // my toys
     app.get("/mytoys", async (req, res) => {
       let query = {};
@@ -68,6 +66,19 @@ async function run() {
         query = { sellerEmail: req.query.email };
       }
       const result = await animalToyCollection.find(query).toArray();
+      res.send(result);
+    });
+
+    app.get("/mytoys/:sortType", async (req, res) => {
+      const sortType = req.params.sortType;
+      let query = {};
+      if (req.query?.email) {
+        query = { sellerEmail: req.query.email };
+      }
+      const result = await animalToyCollection
+        .find(query)
+        .sort({ price: sortType === "ascending" ? 1 : -1 })
+        .toArray();
       res.send(result);
     });
 
