@@ -40,6 +40,13 @@ async function run() {
       res.send(result);
     });
 
+    app.get("/searchbyname/:toyname", async(req, res) => {
+      const toyName = req.params.toyname;
+      const filter = {toyName: {$regex: toyName}}
+      const result = await animalToyCollection.find(filter).toArray()
+      res.send(result)
+    })
+
     app.get("/toydetails/:id", async (req, res) => {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
