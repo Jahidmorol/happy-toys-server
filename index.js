@@ -23,14 +23,16 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
+    // await client.connect();
 
     const animalToyCollection = client.db("happyToys").collection("animalToys");
 
     app.get("/alltoys", async (req, res) => {
-      const result = await animalToyCollection.find().limit(20).toArray();
+      const limit = parseInt(req.query.limit);
+      const result = await animalToyCollection.find().limit(limit).toArray();
       res.send(result);
     });
+
 
     app.get("/toycategory/:category", async (req, res) => {
       const category = req.params.category;
