@@ -84,7 +84,7 @@ async function run() {
       res.send(result);
     });
 
-    app.get("/mytoys/:id", async (req, res) => {
+    app.get("/mytoy/:id", async (req, res) => {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
       const result = await animalToyCollection.findOne(query);
@@ -102,6 +102,7 @@ async function run() {
       const id = req.params.id;
       const filter = { _id: new ObjectId(id) };
       const toys = req.body;
+      console.log(id,toys);
       const updateDoc = {
         $set: {
           price: toys.price,
@@ -112,7 +113,7 @@ async function run() {
       const result = await animalToyCollection.updateOne(filter, updateDoc);
       res.send(result);
     });
-
+    
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log(
